@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+const excerptLength = 100;
+
 const Card = styled.div`
     border: solid green 2px;
     border-radius: 8px;
@@ -51,6 +53,10 @@ export default function BasicCard({ business, baseUrl, orderNumber }) {
             (async () => {
                 try {
                     const data = await axios.get(`${baseUrl}/reviews/${business.id}`);
+                    const review = data.data;
+                    if(review.text.length >= excerptLength) {
+                        review.text = `${review.text.slice(0, 100)}...`;
+                    }
                     setReviewData(data.data);
                 } catch (e) {
                     setError("Error - Please Try Again");
@@ -67,7 +73,7 @@ export default function BasicCard({ business, baseUrl, orderNumber }) {
             {reviewData ?
                 <>
                     <RevName>{reviewData.user.name}</RevName>
-                    <RevText>"{reviewData.text.slice(0, 100)}..."</RevText>
+                    <RevText>{reviewData.text}</RevText>
                 </>
                 :
                 error ?
