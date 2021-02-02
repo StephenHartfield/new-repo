@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 import BasicCard from './BasicCard';
 import styled from 'styled-components';
 
+const base = "http://localhost:4000";
+
 const StyledContainer = styled.div`
   margin: 0px 20%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   min-height: 600px;
 `;
@@ -27,7 +29,7 @@ function App() {
   useEffect(() => {
     (async () => {
       try {
-        const data = await axios.get("http://localhost:4000/business");
+        const data = await axios.get(`${base}/business`);
         setBusinessData(data.data);
       } catch (e) {
         setError("Error - Please Try Again");
@@ -41,8 +43,13 @@ function App() {
       <StyledContainer>
         {businessData ?
           businessData.length > 0 ?
-            businessData.map(business => (
-              <BasicCard key={business.id} business={business} />
+            businessData.map((business, idx) => (
+              <BasicCard 
+                key={business.id} 
+                business={business}
+                orderNumber={idx+1}
+                baseUrl={base} 
+              />
             ))
             :
             <NoData>No Data To Show</NoData>

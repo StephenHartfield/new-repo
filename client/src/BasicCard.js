@@ -6,14 +6,17 @@ const Card = styled.div`
     border: solid green 2px;
     border-radius: 8px;
     padding: 20px;
-    margin: 10px 40px;
-    flex:1;
-    min-width: 200px;
+    margin: 10px 0px;
+    width: 49%;
     min-height: 180px;
-    max-width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+`;
+
+const Order = styled.p`
+    margin-top: -15px;
+    margin-left: -10px;
 `;
 
 const Header = styled.h1`
@@ -39,7 +42,7 @@ const RevText = styled.p`
     font-size: 13px;
 `;
 
-export default function BasicCard({ business }) {
+export default function BasicCard({ business, baseUrl, orderNumber }) {
     const [reviewData, setReviewData] = useState(null);
     const [error, setError] = useState(null);
 
@@ -47,17 +50,18 @@ export default function BasicCard({ business }) {
         if (business.id) {
             (async () => {
                 try {
-                    const data = await axios.get(`http://localhost:4000/reviews/${business.id}`);
+                    const data = await axios.get(`${baseUrl}/reviews/${business.id}`);
                     setReviewData(data.data);
                 } catch (e) {
                     setError("Error - Please Try Again");
                 }
             })();
         }
-    }, []);
+    }, [business.id]);
 
     return (
         <Card>
+            <Order>{orderNumber}</Order>
             <Header>{business.name}</Header>
             <Location>{business.location.address1}, {business.location.city}</Location>
             {reviewData ?
