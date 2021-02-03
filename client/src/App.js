@@ -9,7 +9,7 @@ const StyledContainer = styled.div`
   margin: 0px 20%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: ${props => props.noCards ? 'center' : 'space-between'};
   align-items: center;
   min-height: 600px;
 `;
@@ -40,7 +40,7 @@ function App() {
   return (
     <>
       <Header>Top 5 Ice Cream Spots in Alpharetta, GA</Header>
-      <StyledContainer>
+      <StyledContainer noCards={!businessData}>
         {businessData ?
           businessData.length > 0 ?
             businessData.map((business, idx) => (
