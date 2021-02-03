@@ -11,7 +11,9 @@ router.get('/:id', (req, res, next) => {
             "Authorization": `Bearer ${apiKey}`
         }
     }).then(response => {
-        res.status(200).json(response.data.reviews[0]);
+        // bring a 5-star rating to the top
+        const sorted = response.data.reviews.sort((a, b) => b.rating - a.rating);
+        res.status(200).json(sorted[0]);
     }).catch(e => {
         res.status(400).json(e);
     })
