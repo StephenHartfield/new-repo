@@ -54,6 +54,8 @@ export default function BasicCard({ business, baseUrl, orderNumber }) {
                 try {
                     const data = await axios.get(`${baseUrl}/reviews/${business.id}`);
                     const review = data.data;
+
+                    // trim review based on a const length that could be abstracted out
                     if(review.text.length >= excerptLength) {
                         review.text = `${review.text.slice(0, 100)}...`;
                     }
@@ -63,7 +65,7 @@ export default function BasicCard({ business, baseUrl, orderNumber }) {
                 }
             })();
         }
-    }, [business.id]);
+    }, [baseUrl, business.id]);
 
     return (
         <Card>
