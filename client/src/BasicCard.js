@@ -1,6 +1,6 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { getReview } from './api.service';
 
 const excerptLength = 100;
 
@@ -44,7 +44,7 @@ const RevText = styled.p`
     font-size: 13px;
 `;
 
-export default function BasicCard({ business, baseUrl, orderNumber }) {
+export default function BasicCard({ business, orderNumber }) {
     const [reviewData, setReviewData] = useState(null);
     const [error, setError] = useState(null);
 
@@ -52,12 +52,12 @@ export default function BasicCard({ business, baseUrl, orderNumber }) {
         if (business.id) {
             (async () => {
                 try {
-                    const data = await axios.get(`${baseUrl}/reviews/${business.id}`);
+                    const data = await getReview(business.id);
                     const review = data.data;
 
                     // trim review based on a const length that could be abstracted out
                     if(review.text.length >= excerptLength) {
-                        review.text = `${review.text.slice(0, 100)}...`;
+                        review.text = `${review.text.slice(0, excerptLength)}...`;
                     }
                     setReviewData(data.data);
                 } catch (e) {
@@ -65,7 +65,7 @@ export default function BasicCard({ business, baseUrl, orderNumber }) {
                 }
             })();
         }
-    }, [baseUrl, business.id]);
+    }, [business.id]);
 
     return (
         <Card>

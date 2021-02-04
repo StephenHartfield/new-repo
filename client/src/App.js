@@ -1,9 +1,7 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import BasicCard from './BasicCard';
 import styled from 'styled-components';
-
-const base = "http://localhost:4000";
+import {getTopFive} from './api.service';
 
 const StyledContainer = styled.div`
   margin: 0px 20%;
@@ -29,7 +27,7 @@ function App() {
   useEffect(() => {
     (async () => {
       try {
-        const data = await axios.get(`${base}/business`);
+        const data = await getTopFive();
         setBusinessData(data.data);
       } catch (e) {
         setError("Error - Please Try Again");
@@ -48,7 +46,6 @@ function App() {
                 key={business.id} 
                 business={business}
                 orderNumber={idx+1}
-                baseUrl={base} 
               />
             ))
             :
